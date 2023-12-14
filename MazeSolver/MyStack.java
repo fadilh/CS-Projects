@@ -1,0 +1,69 @@
+import java.util.EmptyStackException;
+
+public class MyStack {
+    private Square[] stack;
+    private int size;
+
+    public MyStack(){
+        stack = new Square[2];
+        size = 0;
+    }
+
+    public MyStack(int initCap) {
+        this();
+        stack = new Square[initCap];
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public Square peek() {
+        if (size != 0) {
+            return stack[0];
+        } else {
+            throw new EmptyStackException();
+        }
+    }
+
+    public Square pop() {
+        if (size != 0) {
+            Square popped = stack[0];
+            stack[0] = null;
+            for (int i = 0; i < size - 1; i++) {
+                stack[i] = stack[i+1];
+            }
+            size--;
+            return popped;
+        } else {
+            throw new EmptyStackException();
+        }
+    }
+
+    public void push(Square item) {
+        if (size == stack.length) {doubleCapacity();}
+        for (int i = size - 1; i >= 0; i--) {
+            Square current = stack[i];
+            stack[i+1] = current;
+        }
+        stack[0] = item;
+        size++;
+    }
+
+    private void doubleCapacity() {
+        Square[] newArr = new Square[stack.length * 2];
+        for (int i = 0; i < size; i++) {
+            newArr[i] = stack[i];
+        }
+        stack = newArr;
+    }
+
+    @Override
+    public String toString() {
+        String output = "";
+        for (int i = 0; i < size; i++) {
+            output += "\n" + stack[i];
+        }
+        return output;
+    }
+}
